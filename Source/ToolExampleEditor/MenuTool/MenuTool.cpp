@@ -18,9 +18,9 @@ public:
 
 	virtual void RegisterCommands() override
 	{
-		UI_COMMAND( MenuCommand1, "Menu Command 1", "Test Menu Command 1.", EUserInterfaceActionType::Button, FInputGesture() );
-		UI_COMMAND( MenuCommand2, "Menu Command 2", "Test Menu Command 2.", EUserInterfaceActionType::Button, FInputGesture() );
-		UI_COMMAND( MenuCommand3, "Menu Command 3", "Test Menu Command 3.", EUserInterfaceActionType::Button, FInputGesture() );
+		UI_COMMAND( MenuCommand1, "Menu Command 1", "Test Menu Command 1.", EUserInterfaceActionType::Button, FInputChord() );
+		UI_COMMAND( MenuCommand2, "Menu Command 2", "Test Menu Command 2.", EUserInterfaceActionType::Button, FInputChord() );
+		UI_COMMAND( MenuCommand3, "Menu Command 3", "Test Menu Command 3.", EUserInterfaceActionType::Button, FInputChord() );
 	}
 
 public:
