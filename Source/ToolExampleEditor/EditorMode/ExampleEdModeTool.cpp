@@ -47,8 +47,8 @@ void ExampleEdModeTool::RegisterStyleSet()
 	}
 
 	StyleSet = MakeShareable( new FSlateStyleSet( "ExampleEdModeToolStyle" ) );
-	StyleSet->SetContentRoot( FPaths::GameUserDeveloperDir() / TEXT( "Content/EditorResources" ) );
-	StyleSet->SetCoreContentRoot( FPaths::GameUserDeveloperDir() / TEXT( "Content/EditorResources" ) );
+	StyleSet->SetContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Content/EditorResources" ) );
+	StyleSet->SetCoreContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Content/EditorResources" ) );
 
 	// Spline editor
 	{
