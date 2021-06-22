@@ -1,9 +1,11 @@
-#include "ToolExampleEditor/ToolExampleEditor.h"
-#include "ExampleEdMode.h"
 #include "SExampleEdModeWidget.h"
 
-void SExampleEdModeWidget::Construct(const FArguments& InArgs)
+#include "ExampleEdMode.h"
+#include "ToolExampleEditor/ToolExampleEditor.h"
+
+void SExampleEdModeWidget::Construct( const FArguments& InArgs )
 {
+	/* clang-format off */
 	ChildSlot
 	[
 		SNew(SScrollBox)
@@ -47,11 +49,12 @@ void SExampleEdModeWidget::Construct(const FArguments& InArgs)
 			]
 		]
 	];
+	/* clang-format on */
 }
 
 FExampleEdMode* SExampleEdModeWidget::GetEdMode() const
 {
-	return (FExampleEdMode*)GLevelEditorModeTools().GetActiveMode(FExampleEdMode::EM_Example);
+	return (FExampleEdMode*)GLevelEditorModeTools().GetActiveMode( FExampleEdMode::EM_Example );
 }
 
 FReply SExampleEdModeWidget::OnAddPoint()

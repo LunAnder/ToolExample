@@ -1,54 +1,55 @@
-#include "ToolExampleEditor/ToolExampleEditor.h"
 #include "ReimportExampleDataFactory.h"
-#include "ExampleDataFactory.h"
-#include "CustomDataType/ExampleData.h"
 
-bool UReimportExampleDataFactory::CanReimport(UObject* Obj, TArray<FString>& OutFilenames)
+#include "ExampleDataFactory.h"
+#include "ToolExample/CustomDataType/ExampleData.h"
+#include "ToolExampleEditor/ToolExampleEditor.h"
+
+bool UReimportExampleDataFactory::CanReimport( UObject* Obj, TArray<FString>& OutFilenames )
 {
-	UExampleData* ExampleData = Cast<UExampleData>(Obj);
-	if (ExampleData)
+	UExampleData* ExampleData = Cast<UExampleData>( Obj );
+	if( ExampleData )
 	{
-		OutFilenames.Add(UAssetImportData::ResolveImportFilename(ExampleData->SourceFilePath, ExampleData->GetOutermost()));
+		OutFilenames.Add( UAssetImportData::ResolveImportFilename( ExampleData->SourceFilePath, ExampleData->GetOutermost() ) );
 		return true;
 	}
 	return false;
 }
 
-void UReimportExampleDataFactory::SetReimportPaths(UObject* Obj, const TArray<FString>& NewReimportPaths)
+void UReimportExampleDataFactory::SetReimportPaths( UObject* Obj, const TArray<FString>& NewReimportPaths )
 {
-	UExampleData* ExampleData = Cast<UExampleData>(Obj);
-	if (ExampleData && ensure(NewReimportPaths.Num() == 1))
+	UExampleData* ExampleData = Cast<UExampleData>( Obj );
+	if( ExampleData && ensure( NewReimportPaths.Num() == 1 ) )
 	{
-		ExampleData->SourceFilePath = UAssetImportData::SanitizeImportFilename(NewReimportPaths[0], ExampleData->GetOutermost());
+		ExampleData->SourceFilePath = UAssetImportData::SanitizeImportFilename( NewReimportPaths[0], ExampleData->GetOutermost() );
 	}
 }
 
-EReimportResult::Type UReimportExampleDataFactory::Reimport(UObject* Obj)
+EReimportResult::Type UReimportExampleDataFactory::Reimport( UObject* Obj )
 {
-	UExampleData* ExampleData = Cast<UExampleData>(Obj);
-	if (!ExampleData)
+	UExampleData* ExampleData = Cast<UExampleData>( Obj );
+	if( !ExampleData )
 	{
 		return EReimportResult::Failed;
 	}
 
-	const FString Filename = UAssetImportData::ResolveImportFilename(ExampleData->SourceFilePath, ExampleData->GetOutermost());
-	if (!FPaths::GetExtension(Filename).Equals(TEXT("xmp")))
+	const FString Filename = UAssetImportData::ResolveImportFilename( ExampleData->SourceFilePath, ExampleData->GetOutermost() );
+	if( !FPaths::GetExtension( Filename ).Equals( TEXT( "xmp" ) ) )
 	{
 		return EReimportResult::Failed;
 	}
 
 	CurrentFilename = Filename;
 	FString Data;
-	if (FFileHelper::LoadFileToString(Data, *CurrentFilename))
+	if( FFileHelper::LoadFileToString( Data, *CurrentFilename ) )
 	{
 		const TCHAR* Ptr = *Data;
 		ExampleData->Modify();
-		ExampleData->MarkPackageDirty();
+		bool bNotUsed = ExampleData->MarkPackageDirty();
 
-		UExampleDataFactory::MakeExampleDataFromText(ExampleData, Ptr, Ptr + Data.Len());
+		UExampleDataFactory::MakeExampleDataFromText( ExampleData, Ptr, Ptr + Data.Len() );
 
 		// save the source file path and timestamp
-		ExampleData->SourceFilePath = UAssetImportData::SanitizeImportFilename(CurrentFilename, ExampleData->GetOutermost());
+		ExampleData->SourceFilePath = UAssetImportData::SanitizeImportFilename( CurrentFilename, ExampleData->GetOutermost() );
 	}
 
 	return EReimportResult::Succeeded;

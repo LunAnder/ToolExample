@@ -1,16 +1,17 @@
-
-#include "ToolExampleEditor/ToolExampleEditor.h"
 #include "TabToolPanel.h"
 
-void TabToolPanel::Construct(const FArguments& InArgs)
+#include "ToolExampleEditor/ToolExampleEditor.h"
+
+void TabToolPanel::Construct( const FArguments& InArgs )
 {
 	tool = InArgs._Tool;
-	
-	if (tool.IsValid())
+
+	if( tool.IsValid() )
 	{
 		// do anything you need from tool object
 	}
 
+	/* clang-format off */
 	ChildSlot
 	[
 		SNew(SScrollBox)
@@ -27,4 +28,5 @@ void TabToolPanel::Construct(const FArguments& InArgs)
 			]
 		]
 	];
+	/* clang-format on */
 }

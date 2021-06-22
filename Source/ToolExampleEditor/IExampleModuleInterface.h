@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ModuleManager.h"
-
 
 class IExampleModuleListenerInterface
 {
 public:
+	virtual ~IExampleModuleListenerInterface() = default;
+
 	virtual void OnStartupModule() {};
 	virtual void OnShutdownModule() {};
 };

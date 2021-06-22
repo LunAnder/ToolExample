@@ -1,21 +1,21 @@
-#include "ToolExampleEditor/ToolExampleEditor.h"
 #include "ExampleDataTypeActions.h"
-#include "CustomDataType/ExampleData.h"
+
+#include "ToolExample/CustomDataType/ExampleData.h"
+#include "ToolExampleEditor/ToolExampleEditor.h"
 
 
-FExampleDataTypeActions::FExampleDataTypeActions(EAssetTypeCategories::Type InAssetCategory)
-	: MyAssetCategory(InAssetCategory)
-{
-}
+FExampleDataTypeActions::FExampleDataTypeActions( EAssetTypeCategories::Type InAssetCategory )
+: MyAssetCategory( InAssetCategory )
+{}
 
 FText FExampleDataTypeActions::GetName() const
 {
-	return FText::FromString("Example Data");
+	return FText::FromString( "Example Data" );
 }
 
 FColor FExampleDataTypeActions::GetTypeColor() const
 {
-	return FColor(230, 205, 165);
+	return FColor( 230, 205, 165 );
 }
 
 UClass* FExampleDataTypeActions::GetSupportedClass() const
@@ -28,29 +28,24 @@ uint32 FExampleDataTypeActions::GetCategories()
 	return MyAssetCategory;
 }
 
-void FExampleDataTypeActions::GetActions(const TArray<UObject*>& InObjects, FMenuBuilder& MenuBuilder)
+void FExampleDataTypeActions::GetActions( const TArray<UObject*>& InObjects, FMenuBuilder& MenuBuilder )
 {
-	auto ExampleDataImports = GetTypedWeakObjectPtrs<UExampleData>(InObjects);
+	auto ExampleDataImports = GetTypedWeakObjectPtrs<UExampleData>( InObjects );
 
-	MenuBuilder.AddMenuEntry(
-		FText::FromString("Reimport"),
-		FText::FromString("Reimports example data."),
-		FSlateIcon(),
-		FUIAction(
-			FExecuteAction::CreateSP(this, &FExampleDataTypeActions::ExecuteReimport, ExampleDataImports),
-			FCanExecuteAction()
-		)
-	);
+	MenuBuilder.AddMenuEntry( FText::FromString( "Reimport" ),
+														FText::FromString( "Reimports example data." ),
+														FSlateIcon(),
+														FUIAction( FExecuteAction::CreateSP( this, &FExampleDataTypeActions::ExecuteReimport, ExampleDataImports ), FCanExecuteAction() ) );
 }
 
-void FExampleDataTypeActions::ExecuteReimport(TArray<TWeakObjectPtr<UExampleData>> Objects)
+void FExampleDataTypeActions::ExecuteReimport( TArray<TWeakObjectPtr<UExampleData>> Objects )
 {
-	for (auto ObjIt = Objects.CreateConstIterator(); ObjIt; ++ObjIt)
+	for( auto ObjIt = Objects.CreateConstIterator(); ObjIt; ++ObjIt )
 	{
-		auto Object = (*ObjIt).Get();
-		if (Object)
+		auto Object = ( *ObjIt ).Get();
+		if( Object )
 		{
-			FReimportManager::Instance()->Reimport(Object, /*bAskForNewFileIfMissing=*/true);
+			FReimportManager::Instance()->Reimport( Object, /*bAskForNewFileIfMissing=*/true );
 		}
 	}
 }
