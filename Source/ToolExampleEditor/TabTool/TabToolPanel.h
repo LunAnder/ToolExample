@@ -1,10 +1,11 @@
 #pragma once
 
+#include "TabTool.h"
+
 //#include "SDockTab.h"
 //#include "SDockableTab.h"
 //#include "SDockTabStack.h"
 //#include "SlateApplication.h"
-#include "TabTool.h"
 
 class TabToolPanel : public SCompoundWidget
 {

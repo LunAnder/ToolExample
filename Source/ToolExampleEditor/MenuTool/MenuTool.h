@@ -5,13 +5,13 @@
 class MenuTool : public IExampleModuleListenerInterface, public TSharedFromThis<MenuTool>
 {
 public:
-	virtual ~MenuTool() {}
+	virtual ~MenuTool() override {}
 
 	virtual void OnStartupModule() override;
 	virtual void OnShutdownModule() override;
 
-	void MakeMenuEntry(FMenuBuilder &menuBuilder);
-	void MakeSubMenu(FMenuBuilder &menuBuilder);
+	void MakeMenuEntry( FMenuBuilder& menuBuilder );
+	void MakeSubMenu( FMenuBuilder& menuBuilder );
 
 
 protected:
@@ -28,6 +28,6 @@ protected:
 	FName TagToAdd;
 
 	FReply AddTag();
-	FText GetTagToAddText() const;
-	void OnTagToAddTextCommited(const FText& InText, ETextCommit::Type CommitInfo);
+	FText	 GetTagToAddText() const;
+	void	 OnTagToAddTextCommited( const FText& InText, ETextCommit::Type CommitInfo );
 };

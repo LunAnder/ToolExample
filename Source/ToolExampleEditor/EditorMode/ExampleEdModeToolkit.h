@@ -5,7 +5,6 @@
 #include "SExampleEdModeWidget.h"
 
 
-
 class FExampleEdModeToolkit : public FModeToolkit
 {
 public:

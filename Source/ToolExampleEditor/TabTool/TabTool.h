@@ -5,9 +5,11 @@
 class TabTool : public FExampleTabToolBase
 {
 public:
-	virtual ~TabTool() {}
+	virtual ~TabTool() override	{}
+	
 	virtual void OnStartupModule() override;
 	virtual void OnShutdownModule() override;
 	virtual void Initialize() override;
+
 	virtual TSharedRef<SDockTab> SpawnTab(const FSpawnTabArgs& TabSpawnArgs) override;
 };

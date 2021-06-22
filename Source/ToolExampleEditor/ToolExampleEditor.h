@@ -2,17 +2,18 @@
 
 #pragma once
 
-#include "UnrealEd.h"
-//#include "Engine.h"
-#include "SlateBasics.h"
+#include "Editor/LevelEditor/Public/LevelEditor.h"
+#include "IAssetTypeActions.h"
+#include "IExampleModuleInterface.h"
 #include "SlateExtras.h"
+#include "UnrealEd.h"
+
+//#include "Engine.h"
+//#include "SlateBasics.h"
 //#include "Internationalization.h"
 //#include "MultiBoxExtender.h"
-#include "Editor/LevelEditor/Public/LevelEditor.h"
-#include "Editor/PropertyEditor/Public/PropertyEditing.h"
-#include "IAssetTypeActions.h"
+//#include "Editor/PropertyEditor/Public/PropertyEditing.h"
 
-#include "IExampleModuleInterface.h"
 
 class FToolExampleEditor : public IExampleModuleInterface
 {
@@ -31,7 +32,7 @@ public:
 	*/
 	static inline FToolExampleEditor& Get()
 	{
-		return FModuleManager::LoadModuleChecked< FToolExampleEditor >("ToolExampleEditor");
+		return FModuleManager::LoadModuleChecked<FToolExampleEditor>( "ToolExampleEditor" );
 	}
 
 	/**
@@ -41,20 +42,23 @@ public:
 	*/
 	static inline bool IsAvailable()
 	{
-		return FModuleManager::Get().IsModuleLoaded("ToolExampleEditor");
+		return FModuleManager::Get().IsModuleLoaded( "ToolExampleEditor" );
 	}
 
-	void AddMenuExtension(const FMenuExtensionDelegate &extensionDelegate, FName extensionHook, const TSharedPtr<FUICommandList> &CommandList = NULL, EExtensionHook::Position position = EExtensionHook::Before);
-	TSharedRef<FWorkspaceItem> GetMenuRoot() { return MenuRoot; };
+	void AddMenuExtension( const FMenuExtensionDelegate& extensionDelegate, FName extensionHook, const TSharedPtr<FUICommandList>& CommandList = NULL, EExtensionHook::Position position = EExtensionHook::Before );
+	TSharedRef<FWorkspaceItem> GetMenuRoot()
+	{
+		return MenuRoot;
+	};
 
 protected:
 	TSharedPtr<FExtensibilityManager> LevelEditorMenuExtensibilityManager;
-	TSharedPtr<FExtender> MenuExtender;
+	TSharedPtr<FExtender>							MenuExtender;
 
 	static TSharedRef<FWorkspaceItem> MenuRoot;
 
 	TArray<TSharedPtr<IAssetTypeActions>> CreatedAssetTypeActions;
 
-	void MakePulldownMenu(FMenuBarBuilder &menuBuilder);
-	void FillPulldownMenu(FMenuBuilder &menuBuilder);
+	void MakePulldownMenu( FMenuBarBuilder& menuBuilder );
+	void FillPulldownMenu( FMenuBuilder& menuBuilder );
 };

@@ -1,5 +1,8 @@
 #include "ExampleActorDetails.h"
 
+#include "DetailCategoryBuilder.h"
+#include "DetailLayoutBuilder.h"
+#include "DetailWidgetRow.h"
 #include "ToolExample/DetailsCustomization/ExampleActor.h"
 #include "ToolExampleEditor/ToolExampleEditor.h"
 

@@ -13,8 +13,4 @@ UCLASS()
 class TOOLEXAMPLE_API AToolExampleGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-	
-	
-	
 };

@@ -1,21 +1,22 @@
 #include "ExampleEdModeTool.h"
 
 #include "AssetRegistryModule.h"
-#include "Editor/UnrealEdEngine.h"
-#include "EditorModeManager.h"
 #include "EditorModeRegistry.h"
-#include "EditorModes.h"
-#include "EditorStyleSet.h"
 #include "ExampleEdMode.h"
-#include "LevelEditorViewport.h"
-#include "Modules/ModuleManager.h"
-#include "PropertyEditorModule.h"
-#include "Settings/EditorExperimentalSettings.h"
 #include "Textures/SlateIcon.h"
-#include "ThumbnailRendering/ThumbnailManager.h"
 #include "ToolExampleEditor/ToolExampleEditor.h"
-#include "UObject/UObjectIterator.h"
-#include "UnrealEdGlobals.h"
+
+//#include "Editor/UnrealEdEngine.h"
+//#include "EditorModeManager.h"
+//#include "EditorModes.h"
+//#include "EditorStyleSet.h"
+//#include "LevelEditorViewport.h"
+//#include "Modules/ModuleManager.h"
+//#include "PropertyEditorModule.h"
+//#include "Settings/EditorExperimentalSettings.h"
+//#include "ThumbnailRendering/ThumbnailManager.h"
+//#include "UObject/UObjectIterator.h"
+//#include "UnrealEdGlobals.h"
 
 #define IMAGE_BRUSH( RelativePath, ... ) FSlateImageBrush( StyleSet->RootToContentDir( RelativePath, TEXT( ".png" ) ), __VA_ARGS__ )
 

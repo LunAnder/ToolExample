@@ -2,6 +2,7 @@
 
 #include "IDetailCustomization.h"
 
+
 class AExampleActor;
 
 class FExampleActorDetails : public IDetailCustomization

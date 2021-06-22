@@ -21,7 +21,8 @@ public:
 #define LOCTEXT_NAMESPACE ""
 	virtual void RegisterCommands() override
 	{
-		UI_COMMAND( DeletePoint, "Delete Point", "Delete the currently selected point.", EUserInterfaceActionType::Button, FInputGesture( EKeys::Delete ) );
+		//UI_COMMAND( DeletePoint, "Delete Point", "Delete the currently selected point.", EUserInterfaceActionType::Button, FInputGesture( EKeys::Delete ) );
+		UI_COMMAND( DeletePoint, "Delete Point", "Delete the currently selected point.", EUserInterfaceActionType::Button, FInputChord( EKeys::Delete ) );
 	}
 #undef LOCTEXT_NAMESPACE
 
