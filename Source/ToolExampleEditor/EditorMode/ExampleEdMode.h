@@ -1,65 +1,81 @@
 #pragma once
-
 #include "EdMode.h"
 #include "EditorModes.h"
 
-struct HExamplePointProxy : public HHitProxy
+
+class AExampleTargetPoint;
+
+
+struct HExamplePointProxy : HHitProxy
 {
 	DECLARE_HIT_PROXY();
 
-	HExamplePointProxy( UObject* InRefObject, int32 InIndex )
+	HExamplePointProxy( UObject* InReferenceObj, int32 const InIndex )
 	: HHitProxy( HPP_UI )
-	, RefObject( InRefObject )
 	, Index( InIndex )
+	, ReferenceObj( InReferenceObj )
 	{}
 
-	UObject* RefObject;
-	int32		 Index;
+
+	int32 Index;
+
+	UObject* ReferenceObj;
 };
 
-class AExampleTargetPoint;
+
 
 class FExampleEdMode : public FEdMode
 {
 public:
-	const static FEditorModeID EM_Example;
+	virtual ~FExampleEdMode() override;
 
-	// FEdMode interface
+
+public: /** FEdMode interface */
 	virtual void Enter() override;
 	virtual void Exit() override;
-	virtual void Render( const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI ) override;
+	virtual void Render( FSceneView const* InView, FViewport* InViewport, FPrimitiveDrawInterface* InInterface ) override;
 	//virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) override;
-	virtual bool		HandleClick( FEditorViewportClient* InViewportClient, HHitProxy* HitProxy, const FViewportClick& Click ) override;
-	virtual bool		InputDelta( FEditorViewportClient* InViewportClient, FViewport* InViewport, FVector& InDrag, FRotator& InRot, FVector& InScale ) override;
-	virtual bool		InputKey( FEditorViewportClient* ViewportClient, FViewport* Viewport, FKey Key, EInputEvent Event ) override;
-	virtual bool		ShowModeWidgets() const override;
-	virtual bool		ShouldDrawWidget() const override;
-	virtual bool		UsesTransformWidget() const override;
-	virtual FVector GetWidgetLocation() const override;
+
+	virtual bool HandleClick( FEditorViewportClient* InViewportClient, HHitProxy* InHitProxy, FViewportClick const& InClick ) override;
+	virtual bool InputDelta( FEditorViewportClient* InViewportClient, FViewport* InViewport, FVector& InDrag, FRotator& InRot, FVector& InScale ) override;
+	virtual bool InputKey( FEditorViewportClient* InClient, FViewport* InViewport, FKey InKey, EInputEvent InEvent ) override;
+	virtual bool ShowModeWidgets() const override;
+	virtual bool ShouldDrawWidget() const override;
+	virtual bool UsesTransformWidget() const override;
 	//virtual bool GetCustomDrawingCoordinateSystem(FMatrix& InMatrix, void* InData) override;
 	//virtual bool GetCustomInputCoordinateSystem(FMatrix& InMatrix, void* InData) override;
 	//virtual void ActorSelectionChangeNotify() override;
 	//virtual void MapChangeNotify() override;
 	//virtual void SelectionChanged() override;
 	//virtual bool IsCompatibleWith(FEditorModeID OtherModeID) const override;
-	// End of FEdMode interface
 
+	virtual FVector GetWidgetLocation() const override;
+	/** End of FEdMode interface */
+
+
+public:
 	FExampleEdMode();
 
-	virtual ~FExampleEdMode() override;
-
 	void AddPoint();
-	bool CanAddPoint() const;
+	void MapCommands();
 	void RemovePoint();
+	void SelectPoint( AExampleTargetPoint* InActor, int32 InIndex );
+
+	bool CanAddPoint() const;
 	bool CanRemovePoint() const;
 	bool HasValidSelection() const;
-	void SelectPoint( AExampleTargetPoint* actor, int32 index );
 
-	TWeakObjectPtr<AExampleTargetPoint> currentSelectedTarget;
-	int32																currentSelectedIndex = -1;
+	TSharedPtr<SWidget> GenerateContextMenu( FEditorViewportClient* InClient ) const;
 
+
+public:
+	static FEditorModeID const EM_Example;
+
+
+public:
+	int32 CurSelIndex = -1;
+
+	TWeakObjectPtr<AExampleTargetPoint> CurSelTarget;
 
 	TSharedPtr<FUICommandList> ExampleEdModeActions;
-	void											 MapCommands();
-	TSharedPtr<SWidget>				 GenerateContextMenu( FEditorViewportClient* InViewportClient ) const;
 };
