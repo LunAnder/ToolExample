@@ -1,63 +1,60 @@
 #include "ExampleEdModeTool.h"
 
+#include "ExampleEdMode.h"
+#include "ToolExampleEditor/ToolExampleEditor.h"
+//
 #include "AssetRegistryModule.h"
 #include "EditorModeRegistry.h"
-#include "ExampleEdMode.h"
 #include "Textures/SlateIcon.h"
-#include "ToolExampleEditor/ToolExampleEditor.h"
 
-//#include "Editor/UnrealEdEngine.h"
-//#include "EditorModeManager.h"
-//#include "EditorModes.h"
-//#include "EditorStyleSet.h"
-//#include "LevelEditorViewport.h"
-//#include "Modules/ModuleManager.h"
-//#include "PropertyEditorModule.h"
-//#include "Settings/EditorExperimentalSettings.h"
-//#include "ThumbnailRendering/ThumbnailManager.h"
-//#include "UObject/UObjectIterator.h"
-//#include "UnrealEdGlobals.h"
 
 #define IMAGE_BRUSH( RelativePath, ... ) FSlateImageBrush( StyleSet->RootToContentDir( RelativePath, TEXT( ".png" ) ), __VA_ARGS__ )
 
+
 TSharedPtr<FSlateStyleSet> ExampleEdModeTool::StyleSet = nullptr;
+
 
 void ExampleEdModeTool::OnStartupModule()
 {
 	RegisterStyleSet();
+
 	RegisterEditorMode();
 }
+
 
 void ExampleEdModeTool::OnShutdownModule()
 {
 	UnregisterStyleSet();
+
 	UnregisterEditorMode();
 }
 
+
 void ExampleEdModeTool::RegisterStyleSet()
 {
-	// Const icon sizes
-	const FVector2D Icon20x20( 20.0f, 20.0f );
-	const FVector2D Icon40x40( 40.0f, 40.0f );
+	FVector2D const Icon20x20( 20.F, 20.F );
+	FVector2D const Icon40x40( 40.F, 40.F );
 
-	// Only register once
 	if( StyleSet.IsValid() )
-	{
+	{ // Only register once
 		return;
 	}
 
+
 	StyleSet = MakeShareable( new FSlateStyleSet( "ExampleEdModeToolStyle" ) );
+
 	StyleSet->SetContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Content/EditorResources" ) );
 	StyleSet->SetCoreContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Content/EditorResources" ) );
 
-	// Spline editor
-	{
+	{ // Spline editor
 		StyleSet->Set( "ExampleEdMode", new IMAGE_BRUSH( TEXT( "IconExampleEditorMode" ), Icon40x40 ) );
 		StyleSet->Set( "ExampleEdMode.Small", new IMAGE_BRUSH( TEXT( "IconExampleEditorMode" ), Icon20x20 ) );
 	}
 
+
 	FSlateStyleRegistry::RegisterSlateStyle( *StyleSet.Get() );
 }
+
 
 void ExampleEdModeTool::UnregisterStyleSet()
 {
@@ -65,9 +62,11 @@ void ExampleEdModeTool::UnregisterStyleSet()
 	{
 		FSlateStyleRegistry::UnRegisterSlateStyle( *StyleSet.Get() );
 		ensure( StyleSet.IsUnique() );
+
 		StyleSet.Reset();
 	}
 }
+
 
 void ExampleEdModeTool::RegisterEditorMode()
 {
@@ -78,9 +77,11 @@ void ExampleEdModeTool::RegisterEditorMode()
 																													 500 );
 }
 
+
 void ExampleEdModeTool::UnregisterEditorMode()
 {
 	FEditorModeRegistry::Get().UnregisterMode( FExampleEdMode::EM_Example );
 }
+
 
 #undef IMAGE_BRUSH
