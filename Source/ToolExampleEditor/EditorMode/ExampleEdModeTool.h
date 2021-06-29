@@ -5,10 +5,10 @@
 class FSlateStyleSet;
 
 
-class ExampleEdModeTool : public FExampleTabToolBase
+class FExampleEdModeTool : public FExampleTabToolBase
 {
 public:
-	virtual ~ExampleEdModeTool() override {}
+	virtual ~FExampleEdModeTool() override {}
 
 	virtual void OnStartupModule() override;
 	virtual void OnShutdownModule() override;

@@ -1,8 +1,10 @@
-#include "TabToolPanel.h"
+#include "ExampleTabToolPanel.h"
 
 #include "ToolExampleEditor/ToolExampleEditor.h"
 
-void TabToolPanel::Construct( const FArguments& InArgs )
+
+
+void SExampleTabToolPanel::Construct( FArguments const& InArgs )
 {
 	tool = InArgs._Tool;
 

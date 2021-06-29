@@ -3,56 +3,69 @@
 #include "ToolExample/CustomDataType/ExampleData.h"
 #include "ToolExampleEditor/ToolExampleEditor.h"
 
-UExampleDataFactory::UExampleDataFactory( const FObjectInitializer& ObjectInitializer )
+
+class UExampleData;
+
+
+UExampleDataFactory::UExampleDataFactory( FObjectInitializer const& ObjectInitializer )
 : Super( ObjectInitializer )
 {
 	Formats.Add( TEXT( "xmp;Example Data" ) );
+
 	SupportedClass = UExampleData::StaticClass();
-	bCreateNew		 = false; // turned off for import
-	bEditAfterNew	 = false; // turned off for import
-	bEditorImport	 = true;
-	bText					 = true;
+
+	bCreateNew		= false; // turned off for import
+	bEditAfterNew = false; // turned off for import
+	bEditorImport = true;
+	bText					= true;
 }
 
-UObject* UExampleDataFactory::FactoryCreateNew( UClass* Class, UObject* InParent, FName Name, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn )
+
+UObject* UExampleDataFactory::FactoryCreateNew( UClass* PtrClass, UObject* PtrParent, FName const InName, EObjectFlags const InFlags, UObject* PtrContext, FFeedbackContext* PtrWarn )
 {
-	UExampleData* NewObjectAsset = NewObject<UExampleData>( InParent, Class, Name, Flags | RF_Transactional );
+	auto* NewObjectAsset = NewObject<UExampleData>( PtrParent, PtrClass, InName, InFlags | RF_Transactional );
+
 	return NewObjectAsset;
 }
 
-UObject* UExampleDataFactory::FactoryCreateText( UClass*					 InClass,
-																								 UObject*					 InParent,
-																								 FName						 InName,
-																								 EObjectFlags			 Flags,
-																								 UObject*					 Context,
-																								 const TCHAR*			 Type,
-																								 const TCHAR*&		 Buffer,
-																								 const TCHAR*			 BufferEnd,
-																								 FFeedbackContext* Warn )
+
+UObject* UExampleDataFactory::FactoryCreateText( UClass*						PtrClass,
+																								 UObject*						PtrParent,
+																								 FName const				InName,
+																								 EObjectFlags const InFlags,
+																								 UObject*						PtrContext,
+																								 TCHAR const*				PtrType,
+																								 TCHAR const*&			RefPtrBuffer,
+																								 TCHAR const*				PtrBufferEnd,
+																								 FFeedbackContext*	PtrWarn )
 {
-	GEditor->GetEditorSubsystem<UImportSubsystem>()->OnAssetPreImport.Broadcast( this, InClass, InParent, InName, Type );	//FEditorDelegates::OnAssetPreImport.Broadcast( this, InClass, InParent, InName, Type );
+	GEditor->GetEditorSubsystem<UImportSubsystem>()->OnAssetPreImport.Broadcast( this, PtrClass, PtrParent, InName, PtrType ); //FEditorDelegates::OnAssetPreImport.Broadcast( this, InClass, InParent, InName, Type );
 
-	// if class type or extension doesn't match, return
-	if( InClass != UExampleData::StaticClass() || FCString::Stricmp( Type, TEXT( "xmp" ) ) != 0 )
+	if( PtrClass != UExampleData::StaticClass() || FCString::Stricmp( PtrType, TEXT( "xmp" ) ) != 0 )
+	{ // If class type or extension doesn't match, return
 		return nullptr;
+	}
 
-	UExampleData* Data = CastChecked<UExampleData>( NewObject<UExampleData>( InParent, InName, Flags ) );
-	MakeExampleDataFromText( Data, Buffer, BufferEnd );
 
-	// save the source file path
+	UExampleData* Data = CastChecked<UExampleData>( NewObject<UExampleData>( PtrParent, InName, InFlags ) );
+
+	MakeExampleDataFromText( Data, RefPtrBuffer, PtrBufferEnd );
+
 	Data->SourceFilePath = UAssetImportData::SanitizeImportFilename( CurrentFilename, Data->GetOutermost() );
 
-	GEditor->GetEditorSubsystem<UImportSubsystem>()->OnAssetPostImport.Broadcast( this, Data );	//FEditorDelegates::OnAssetPostImport.Broadcast( this, Data );
+	GEditor->GetEditorSubsystem<UImportSubsystem>()->OnAssetPostImport.Broadcast( this, Data );
 
 	return Data;
 }
 
-bool UExampleDataFactory::FactoryCanImport( const FString& Filename )
+
+bool UExampleDataFactory::FactoryCanImport( FString const& InFilename )
 {
-	return FPaths::GetExtension( Filename ).Equals( TEXT( "xmp" ) );
+	return FPaths::GetExtension( InFilename ).Equals( TEXT( "xmp" ) );
 }
 
-void UExampleDataFactory::MakeExampleDataFromText( class UExampleData* Data, const TCHAR*& Buffer, const TCHAR* BufferEnd )
+
+void UExampleDataFactory::MakeExampleDataFromText( UExampleData* PtrData, TCHAR const*& RefPtrBuffer, TCHAR const* PtrBufferEnd )
 {
-	Data->ExampleString = Buffer;
+	PtrData->ExampleString = RefPtrBuffer;
 }

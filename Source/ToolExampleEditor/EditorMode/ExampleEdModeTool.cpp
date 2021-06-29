@@ -11,10 +11,10 @@
 #define IMAGE_BRUSH( RelativePath, ... ) FSlateImageBrush( StyleSet->RootToContentDir( RelativePath, TEXT( ".png" ) ), __VA_ARGS__ )
 
 
-TSharedPtr<FSlateStyleSet> ExampleEdModeTool::StyleSet = nullptr;
+TSharedPtr<FSlateStyleSet> FExampleEdModeTool::StyleSet = nullptr;
 
 
-void ExampleEdModeTool::OnStartupModule()
+void FExampleEdModeTool::OnStartupModule()
 {
 	RegisterStyleSet();
 
@@ -22,7 +22,7 @@ void ExampleEdModeTool::OnStartupModule()
 }
 
 
-void ExampleEdModeTool::OnShutdownModule()
+void FExampleEdModeTool::OnShutdownModule()
 {
 	UnregisterStyleSet();
 
@@ -30,7 +30,7 @@ void ExampleEdModeTool::OnShutdownModule()
 }
 
 
-void ExampleEdModeTool::RegisterStyleSet()
+void FExampleEdModeTool::RegisterStyleSet()
 {
 	FVector2D const Icon20x20( 20.F, 20.F );
 	FVector2D const Icon40x40( 40.F, 40.F );
@@ -41,10 +41,10 @@ void ExampleEdModeTool::RegisterStyleSet()
 	}
 
 
-	StyleSet = MakeShareable( new FSlateStyleSet( "ExampleEdModeToolStyle" ) );
+	StyleSet = MakeShareable( new FSlateStyleSet( "ExampleEdModeToolStyle" /*RENAME_ME*/ ) );
 
-	StyleSet->SetContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Content/EditorResources" ) );
-	StyleSet->SetCoreContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Content/EditorResources" ) );
+	StyleSet->SetContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Resources" ) );
+	StyleSet->SetCoreContentRoot( FPaths::ProjectPluginsDir() / TEXT( "ToolExample/Resources" ) );
 
 	{ // Spline editor
 		StyleSet->Set( "ExampleEdMode", new IMAGE_BRUSH( TEXT( "IconExampleEditorMode" ), Icon40x40 ) );
@@ -56,7 +56,7 @@ void ExampleEdModeTool::RegisterStyleSet()
 }
 
 
-void ExampleEdModeTool::UnregisterStyleSet()
+void FExampleEdModeTool::UnregisterStyleSet()
 {
 	if( StyleSet.IsValid() )
 	{
@@ -68,17 +68,17 @@ void ExampleEdModeTool::UnregisterStyleSet()
 }
 
 
-void ExampleEdModeTool::RegisterEditorMode()
+void FExampleEdModeTool::RegisterEditorMode()
 {
 	FEditorModeRegistry::Get().RegisterMode<FExampleEdMode>( FExampleEdMode::EM_Example,
-																													 FText::FromString( "Example Editor Mode" ),
+																													 FText::FromString( "Example Editor Mode" /*RENAME_ME*/ ),
 																													 FSlateIcon( StyleSet->GetStyleSetName(), "ExampleEdMode", "ExampleEdMode.Small" ),
 																													 true,
 																													 500 );
 }
 
 
-void ExampleEdModeTool::UnregisterEditorMode()
+void FExampleEdModeTool::UnregisterEditorMode()
 {
 	FEditorModeRegistry::Get().UnregisterMode( FExampleEdMode::EM_Example );
 }

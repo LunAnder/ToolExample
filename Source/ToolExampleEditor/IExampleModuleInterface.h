@@ -3,7 +3,7 @@
 
 class IExampleModuleListenerInterface
 {
-public:
+public: /// Public Virtual Functions
 	virtual ~IExampleModuleListenerInterface() = default;
 
 	virtual void OnStartupModule(){};
@@ -11,31 +11,39 @@ public:
 };
 
 
+
 class IExampleModuleInterface : public IModuleInterface
 {
-public:
-	void StartupModule() override
-	{
-		if( !IsRunningCommandlet() )
-		{
-			AddModuleListeners();
-			for( int32 i = 0; i < ModuleListeners.Num(); ++i )
-			{
-				ModuleListeners[i]->OnStartupModule();
-			}
-		}
-	}
-
-	void ShutdownModule() override
-	{
-		for( int32 i = 0; i < ModuleListeners.Num(); ++i )
-		{
-			ModuleListeners[i]->OnShutdownModule();
-		}
-	}
-
+public: /// Public Virtual Overriden Functions
 	virtual void AddModuleListeners(){};
+	virtual void StartupModule() override;
+	virtual void ShutdownModule() override;
 
-protected:
+
+protected: /// Protected Variables
 	TArray<TSharedRef<IExampleModuleListenerInterface>> ModuleListeners;
 };
+
+
+
+inline void IExampleModuleInterface::StartupModule()
+{
+	if( !IsRunningCommandlet() )
+	{
+		AddModuleListeners();
+
+		for( int32 IdxListener = 0; IdxListener < ModuleListeners.Num(); ++IdxListener )
+		{
+			ModuleListeners[IdxListener]->OnStartupModule();
+		}
+	}
+}
+
+
+inline void IExampleModuleInterface::ShutdownModule()
+{
+	for( int32 IdxListener = 0; IdxListener < ModuleListeners.Num(); ++IdxListener )
+	{
+		ModuleListeners[IdxListener]->OnShutdownModule();
+	}
+}

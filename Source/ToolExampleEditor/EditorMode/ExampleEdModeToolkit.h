@@ -9,7 +9,7 @@ class FEdMode;
 class SWidget;
 
 
-class FExampleEdModeToolkit : public FModeToolkit
+class FExampleEdModeToolkit final : public FModeToolkit
 {
 public:
 	FExampleEdModeToolkit();

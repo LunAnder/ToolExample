@@ -6,7 +6,7 @@
 class AExampleTargetPoint;
 
 
-struct HExamplePointProxy : HHitProxy
+struct HExamplePointProxy final : HHitProxy
 {
 	DECLARE_HIT_PROXY();
 

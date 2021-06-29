@@ -9,12 +9,12 @@
 
 
 
-class ExampleEditorCommands : public TCommands<ExampleEditorCommands>
+class ExampleEditorCommands final : public TCommands<ExampleEditorCommands>
 {
 public:
 	ExampleEditorCommands()
-	: TCommands<ExampleEditorCommands>( "ExampleEditor", // Context name for fast lookup
-																			FText::FromString( TEXT( "Example Editor" ) ), // context name for displaying
+	: TCommands<ExampleEditorCommands>( "ExampleEditor" /*RENAME_ME*/, // Context name for fast lookup
+																			FText::FromString( TEXT( "Example Editor" /*RENAME_ME*/ ) ), // context name for displaying
 																			NAME_None, // Parent
 																			FEditorStyle::GetStyleSetName() )
 	{}
@@ -35,7 +35,7 @@ public:
 IMPLEMENT_HIT_PROXY( HExamplePointProxy, HHitProxy );
 
 
-FEditorModeID const FExampleEdMode::EM_Example( TEXT( "EM_Example" ) );
+FEditorModeID const FExampleEdMode::EM_Example( TEXT( "EM_Example" /*RENAME_ME*/ ) );
 
 
 FExampleEdMode::FExampleEdMode()

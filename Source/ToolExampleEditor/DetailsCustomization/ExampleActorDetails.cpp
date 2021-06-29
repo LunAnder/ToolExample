@@ -1,33 +1,40 @@
 #include "ExampleActorDetails.h"
 
+#include "ToolExample/DetailsCustomization/ExampleActor.h"
+#include "ToolExampleEditor/ToolExampleEditor.h"
+//
 #include "DetailCategoryBuilder.h"
 #include "DetailLayoutBuilder.h"
 #include "DetailWidgetRow.h"
-#include "ToolExample/DetailsCustomization/ExampleActor.h"
-#include "ToolExampleEditor/ToolExampleEditor.h"
+
+
 
 TSharedRef<IDetailCustomization> FExampleActorDetails::MakeInstance()
 {
 	return MakeShareable( new FExampleActorDetails );
 }
 
-void FExampleActorDetails::CustomizeDetails( IDetailLayoutBuilder& DetailLayout )
+
+void FExampleActorDetails::CustomizeDetails( IDetailLayoutBuilder& RefBuilder )
 {
 	TArray<TWeakObjectPtr<UObject>> Objects;
-	DetailLayout.GetObjectsBeingCustomized( Objects );
+
+	RefBuilder.GetObjectsBeingCustomized( Objects );
+
 	if( Objects.Num() != 1 )
-	{
-		// skip customization if select more than one objects
+	{ // Skip customization if select more than one objects
 		return;
 	}
-	AExampleActor* actor = (AExampleActor*)Objects[0].Get();
 
-	// hide original property
-	DetailLayout.HideProperty( DetailLayout.GetProperty( GET_MEMBER_NAME_CHECKED( AExampleActor, bOption1 ) ) );
-	DetailLayout.HideProperty( DetailLayout.GetProperty( GET_MEMBER_NAME_CHECKED( AExampleActor, bOption2 ) ) );
 
-	// add custom widget to "Options" category
-	IDetailCategoryBuilder& OptionsCategory = DetailLayout.EditCategory( "Options", FText::FromString( "" ), ECategoryPriority::Important );
+	AExampleActor* Actor = static_cast<AExampleActor*>( Objects[0].Get() );
+
+	/// Hide original property
+	RefBuilder.HideProperty( RefBuilder.GetProperty( GET_MEMBER_NAME_CHECKED( AExampleActor, bOption1 ) ) );
+	RefBuilder.HideProperty( RefBuilder.GetProperty( GET_MEMBER_NAME_CHECKED( AExampleActor, bOption2 ) ) );
+
+	/// Add custom widget to "Options" category
+	IDetailCategoryBuilder& OptionsCategory = RefBuilder.EditCategory( "Options", FText::FromString( "" ), ECategoryPriority::Important );
 
 	/* clang-format off */
 	OptionsCategory.AddCustomRow(FText::FromString("Options"))
@@ -40,8 +47,8 @@ void FExampleActorDetails::CustomizeDetails( IDetailLayoutBuilder& DetailLayout 
 					[
 						SNew(SCheckBox)
 						.Style(FEditorStyle::Get(), "RadioButton")
-						.IsChecked(this, &FExampleActorDetails::IsModeRadioChecked, actor, 1)
-						.OnCheckStateChanged(this, &FExampleActorDetails::OnModeRadioChanged, actor, 1)
+						.IsChecked(this, &FExampleActorDetails::IsModeRadioChecked, Actor, 1)
+						.OnCheckStateChanged(this, &FExampleActorDetails::OnModeRadioChanged, Actor, 1)
 						[
 							SNew(STextBlock).Text(FText::FromString("Option 1"))
 						]
@@ -53,8 +60,8 @@ void FExampleActorDetails::CustomizeDetails( IDetailLayoutBuilder& DetailLayout 
 					[
 						SNew(SCheckBox)
 						.Style(FEditorStyle::Get(), "RadioButton")
-						.IsChecked(this, &FExampleActorDetails::IsModeRadioChecked, actor, 2)
-						.OnCheckStateChanged(this, &FExampleActorDetails::OnModeRadioChanged, actor, 2)
+						.IsChecked(this, &FExampleActorDetails::IsModeRadioChecked, Actor, 2)
+						.OnCheckStateChanged(this, &FExampleActorDetails::OnModeRadioChanged, Actor, 2)
 						[
 							SNew(STextBlock).Text(FText::FromString("Option 2"))
 						]
@@ -63,34 +70,52 @@ void FExampleActorDetails::CustomizeDetails( IDetailLayoutBuilder& DetailLayout 
 	/* clang-format on */
 }
 
-ECheckBoxState FExampleActorDetails::IsModeRadioChecked( AExampleActor* actor, int optionIndex ) const
+
+ECheckBoxState FExampleActorDetails::IsModeRadioChecked( AExampleActor* InActor, int32 const InOptionIndex ) const
 {
 	bool bFlag = false;
-	if( actor )
+
+	if( InActor != nullptr )
 	{
-		if( optionIndex == 1 )
-			bFlag = actor->bOption1;
-		else if( optionIndex == 2 )
-			bFlag = actor->bOption2;
+		if( InOptionIndex == 1 )
+		{
+			bFlag = InActor->bOption1;
+		}
+
+		else if( InOptionIndex == 2 )
+		{
+			bFlag = InActor->bOption2;
+		}
 	}
+
+
 	return bFlag ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
 }
 
-void FExampleActorDetails::OnModeRadioChanged( ECheckBoxState CheckType, AExampleActor* actor, int optionIndex )
+
+void FExampleActorDetails::OnModeRadioChanged( ECheckBoxState const InCheckType, AExampleActor* InActor, int32 const InOptionIndex )
 {
-	bool bFlag = ( CheckType == ECheckBoxState::Checked );
-	if( actor )
+	bool const bFlag = ( InCheckType == ECheckBoxState::Checked );
+
+	if( InActor != nullptr )
 	{
-		actor->Modify();
+		InActor->Modify();
+
 		if( bFlag )
-		{
-			// clear all options first
-			actor->bOption1 = false;
-			actor->bOption2 = false;
+		{ // Clear all options first
+			InActor->bOption1 = false;
+			InActor->bOption2 = false;
 		}
-		if( optionIndex == 1 )
-			actor->bOption1 = bFlag;
-		else if( optionIndex == 2 )
-			actor->bOption2 = bFlag;
+
+
+		if( InOptionIndex == 1 )
+		{
+			InActor->bOption1 = bFlag;
+		}
+
+		else if( InOptionIndex == 2 )
+		{
+			InActor->bOption2 = bFlag;
+		}
 	}
 }

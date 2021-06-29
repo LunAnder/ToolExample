@@ -1,23 +1,23 @@
 #pragma once
-
 #include "IDetailCustomization.h"
+
 
 
 class AExampleActor;
 
-class FExampleActorDetails : public IDetailCustomization
+
+class FExampleActorDetails final : public IDetailCustomization
 {
 public:
-	/** Makes a new instance of this detail layout class for a specific detail view requesting it */
-	static TSharedRef<IDetailCustomization> MakeInstance();
+	static TSharedRef<IDetailCustomization> MakeInstance(); // Makes a new instance of this detail layout class for a specific detail view requesting it
 
-	/** IDetailCustomization interface */
-	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailLayout) override;
 
-protected:
+public: /** IDetailCustomization interface */
+	virtual void CustomizeDetails( IDetailLayoutBuilder& RefBuilder ) override;
 
-	// widget functions
-	ECheckBoxState IsModeRadioChecked(AExampleActor* actor, int optionIndex) const;
-	void OnModeRadioChanged(ECheckBoxState CheckType, AExampleActor* actor, int optionIndex);
 
+protected: // widget functions
+	void OnModeRadioChanged( ECheckBoxState InCheckType, AExampleActor* InActor, int32 InOptionIndex );
+
+	ECheckBoxState IsModeRadioChecked( AExampleActor* InActor, int32 InOptionIndex ) const;
 };
