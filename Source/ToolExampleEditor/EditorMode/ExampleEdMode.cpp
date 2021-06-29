@@ -72,7 +72,7 @@ void FExampleEdMode::Enter()
 	}
 
 
-	/// reset
+	/// Reset
 	CurSelTarget = nullptr;
 	CurSelIndex	 = -1;
 
@@ -90,7 +90,7 @@ void FExampleEdMode::Exit()
 }
 
 
-void FExampleEdMode::Render( FSceneView const* InView, FViewport* InViewport, FPrimitiveDrawInterface* InInterface )
+void FExampleEdMode::Render( FSceneView const* PtrView, FViewport* PtrViewport, FPrimitiveDrawInterface* PtrInterface )
 {
 	FColor const NrmColor( 200, 200, 200 );
 	FColor const SelColor( 255, 128, 0 );
@@ -112,16 +112,16 @@ void FExampleEdMode::Render( FSceneView const* InView, FViewport* InViewport, FP
 				FColor const& Color = bSelected ? SelColor : NrmColor;
 
 				/// set hit proxy and draw
-				InInterface->SetHitProxy( new HExamplePointProxy( Actor, IdxPoint ) );
-				InInterface->DrawPoint( Actor->Points[IdxPoint], Color, 15.f, SDPG_Foreground );
-				InInterface->DrawLine( Actor->Points[IdxPoint], ActorLoc, Color, SDPG_Foreground );
-				InInterface->SetHitProxy( nullptr );
+				PtrInterface->SetHitProxy( new HExamplePointProxy( Actor, IdxPoint ) );
+				PtrInterface->DrawPoint( Actor->Points[IdxPoint], Color, 15.f, SDPG_Foreground );
+				PtrInterface->DrawLine( Actor->Points[IdxPoint], ActorLoc, Color, SDPG_Foreground );
+				PtrInterface->SetHitProxy( nullptr );
 			}
 		}
 	}
 
 
-	FEdMode::Render( InView, InViewport, InInterface );
+	FEdMode::Render( PtrView, PtrViewport, PtrInterface );
 }
 
 
@@ -139,7 +139,7 @@ bool FExampleEdMode::HandleClick( FEditorViewportClient* InViewportClient, HHitP
 
 			AExampleTargetPoint* Actor = Cast<AExampleTargetPoint>( ExamplePointProxy->ReferenceObj );
 
-			int32 Index = ExamplePointProxy->Index;
+			int32 const Index = ExamplePointProxy->Index;
 
 			if( Actor != nullptr && Index >= 0 && Index < Actor->Points.Num() )
 			{
@@ -219,13 +219,13 @@ TSharedPtr<SWidget> FExampleEdMode::GenerateContextMenu( FEditorViewportClient* 
 	{
 		if( HasValidSelection() )
 		{
-			/// add label for point index
+			/// Add label for point index
 			TSharedRef<SWidget> const LabelWidget = SNew( STextBlock ).Text( FText::FromString( FString::FromInt( CurSelIndex ) ) ).ColorAndOpacity( FLinearColor::Green );
 
 			MenuBuilder.AddWidget( LabelWidget, FText::FromString( TEXT( "Point Index: " ) ) );
 			MenuBuilder.AddMenuSeparator();
 
-			/// add delete point entry
+			/// Add delete point entry
 			MenuBuilder.AddMenuEntry( ExampleEditorCommands::Get().DeletePoint );
 		}
 	}

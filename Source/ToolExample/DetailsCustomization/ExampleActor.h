@@ -7,14 +7,14 @@ class TOOLEXAMPLE_API AExampleActor : public AActor
 {
 	GENERATED_BODY()
 
-	
+
 public:
-	UPROPERTY(EditAnywhere, Category = "Options")
+	UPROPERTY( EditAnywhere, Category = "Options" )
 	bool bOption1 = false;
 
-	UPROPERTY(EditAnywhere, Category = "Options")
+	UPROPERTY( EditAnywhere, Category = "Options" )
 	bool bOption2 = false;
-	
-	UPROPERTY(EditAnywhere, Category = "Test")
+
+	UPROPERTY( EditAnywhere, Category = "Test" )
 	int32 testInt = 0;
 };

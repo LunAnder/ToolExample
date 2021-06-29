@@ -33,7 +33,7 @@ public:
 public: /** FEdMode interface */
 	virtual void Enter() override;
 	virtual void Exit() override;
-	virtual void Render( FSceneView const* InView, FViewport* InViewport, FPrimitiveDrawInterface* InInterface ) override;
+	virtual void Render( FSceneView const* PtrView, FViewport* PtrViewport, FPrimitiveDrawInterface* PtrInterface ) override;
 	//virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) override;
 
 	virtual bool HandleClick( FEditorViewportClient* InViewportClient, HHitProxy* InHitProxy, FViewportClick const& InClick ) override;
