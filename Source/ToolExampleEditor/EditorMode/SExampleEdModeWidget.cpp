@@ -3,7 +3,9 @@
 #include "ExampleEdMode.h"
 #include "ToolExampleEditor/ToolExampleEditor.h"
 
-void SExampleEdModeWidget::Construct( const FArguments& InArgs )
+
+BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
+void SExampleEdModeWidget::Construct( FArguments const& InArgs )
 {
 	/* clang-format off */
 	ChildSlot
@@ -51,28 +53,36 @@ void SExampleEdModeWidget::Construct( const FArguments& InArgs )
 	];
 	/* clang-format on */
 }
+END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
 
 FExampleEdMode* SExampleEdModeWidget::GetEdMode() const
 {
-	return (FExampleEdMode*)GLevelEditorModeTools().GetActiveMode( FExampleEdMode::EM_Example );
+	return static_cast<FExampleEdMode*>( GLevelEditorModeTools().GetActiveMode( FExampleEdMode::EM_Example ) );
 }
+
 
 FReply SExampleEdModeWidget::OnAddPoint()
 {
 	GetEdMode()->AddPoint();
+
 	return FReply::Handled();
 }
+
 
 bool SExampleEdModeWidget::CanAddPoint() const
 {
 	return GetEdMode()->CanAddPoint();
 }
 
+
 FReply SExampleEdModeWidget::OnRemovePoint()
 {
 	GetEdMode()->RemovePoint();
+
 	return FReply::Handled();
 }
+
 
 bool SExampleEdModeWidget::CanRemovePoint() const
 {

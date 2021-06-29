@@ -1,19 +1,24 @@
 #pragma once
 
 
+class FExampleEdMode;
+
+
 class SExampleEdModeWidget : public SCompoundWidget
 {
 public:
 	SLATE_BEGIN_ARGS( SExampleEdModeWidget ) {}
 	SLATE_END_ARGS();
 
-	void Construct( const FArguments& InArgs );
+	void Construct( FArguments const& InArgs );
 
-	// Util Functions
-	class FExampleEdMode* GetEdMode() const;
+	
+public: // Util Functions
+	FExampleEdMode* GetEdMode() const;
 
-	FReply OnAddPoint();
 	bool	 CanAddPoint() const;
-	FReply OnRemovePoint();
 	bool	 CanRemovePoint() const;
+	
+	FReply OnAddPoint();
+	FReply OnRemovePoint();
 };
